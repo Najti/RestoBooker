@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    
+    <ProjectReference Include="..\RestoBooker.Domain\Restobooker.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
