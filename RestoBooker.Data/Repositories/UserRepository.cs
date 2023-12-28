@@ -75,29 +75,42 @@ namespace RestoBooker.Data.Repositories
 
         public void DeleteUser(int id)
         {
-            throw new NotImplementedException();
-        }
-
-        public User GetUserById(int id)
-        {
-            User user = new User();
-
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string query = @"
-                    SELECT u.UserId, u.Name, ci.PhoneNumber, ci.Email, l.Postcode, l.MunicipalityName, l.StreetName, l.HouseNumberLabel
-                    FROM [User] u
-                    LEFT JOIN ContactInfo ci ON u.ContactInfoId = ci.ContactInfoId
-                    LEFT JOIN Location l ON u.LocationId = l.LocationId
-                    WHERE u.UserId = @UserId
-                ";
+            UPDATE [User]
+            SET DeletedAt = GETDATE()
+            WHERE UserId = @UserId
+        ";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@UserId", id);
 
                     connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+        public User GetUserById(int id)
+        {
+            User user = null;
 
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = @"
+            SELECT u.UserId, u.Name, ci.PhoneNumber, ci.Email, l.Postcode, l.MunicipalityName, l.StreetName, l.HouseNumberLabel
+            FROM [User] u
+            LEFT JOIN ContactInfo ci ON u.ContactInfoId = ci.ContactInfoId
+            LEFT JOIN Location l ON u.LocationId = l.LocationId
+            WHERE u.UserId = @UserId AND u.DeletedAt IS NULL
+        ";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@UserId", id);
+
+                    connection.Open();
 
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -106,32 +119,190 @@ namespace RestoBooker.Data.Repositories
                             // Haal de gegevens uit de database en maak een nieuwe User met ContactInfo en Location
                             ContactInfo ci = new ContactInfo(reader.GetString(2), reader.GetString(3));
                             Location l = new Location(reader.GetInt32(4), reader.GetString(5), reader.IsDBNull(6) ? null : reader.GetString(6), reader.IsDBNull(7) ? null : reader.GetString(7));
-                            user.CustomerId = reader.GetInt32(0);
-                            user.Name = reader.GetString(1);
-                            user.ContactInfo = ci;
-                            user.Location = l;
-                        };
+
+                            user = new User
+                            {
+                                CustomerId = reader.GetInt32(0),
+                                Name = reader.GetString(1),
+                                ContactInfo = ci,
+                                Location = l
+                            };
+                        }
                     }
                 }
             }
             return user;
         }
-
-
         public List<User> GetUsers()
         {
-            throw new NotImplementedException();
+            List<User> users = new List<User>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = @"
+            SELECT u.UserId, u.Name, ci.PhoneNumber, ci.Email, l.Postcode, l.MunicipalityName, l.StreetName, l.HouseNumberLabel
+            FROM [User] u
+            LEFT JOIN ContactInfo ci ON u.ContactInfoId = ci.ContactInfoId
+            LEFT JOIN Location l ON u.LocationId = l.LocationId
+            WHERE u.DeletedAt IS NULL
+        ";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    connection.Open();
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            // Haal de gegevens uit de database en maak nieuwe User-objecten met ContactInfo en Location
+                            ContactInfo ci = new ContactInfo(reader.GetString(2), reader.GetString(3));
+                            Location l = new Location(reader.GetInt32(4), reader.GetString(5), reader.IsDBNull(6) ? null : reader.GetString(6), reader.IsDBNull(7) ? null : reader.GetString(7));
+
+                            User user = new User
+                            {
+                                CustomerId = reader.GetInt32(0),
+                                Name = reader.GetString(1),
+                                ContactInfo = ci,
+                                Location = l
+                            };
+
+                            users.Add(user);
+                        }
+                    }
+                }
+            }
+
+            return users;
         }
+
+        public List<User> GetDeletedUsers()
+        {
+            List<User> users = new List<User>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = @"
+            SELECT u.UserId, u.Name, ci.PhoneNumber, ci.Email, l.Postcode, l.MunicipalityName, l.StreetName, l.HouseNumberLabel
+            FROM [User] u
+            LEFT JOIN ContactInfo ci ON u.ContactInfoId = ci.ContactInfoId
+            LEFT JOIN Location l ON u.LocationId = l.LocationId
+            WHERE u.DeletedAt IS NOT NULL
+        ";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    connection.Open();
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            // Haal de gegevens uit de database en maak nieuwe User-objecten met ContactInfo en Location
+                            ContactInfo ci = new ContactInfo(reader.GetString(2), reader.GetString(3));
+                            Location l = new Location(reader.GetInt32(4), reader.GetString(5), reader.IsDBNull(6) ? null : reader.GetString(6), reader.IsDBNull(7) ? null : reader.GetString(7));
+
+                            User user = new User
+                            {
+                                CustomerId = reader.GetInt32(0),
+                                Name = reader.GetString(1),
+                                ContactInfo = ci,
+                                Location = l
+                            };
+
+                            users.Add(user);
+                        }
+                    }
+                }
+            }
+
+            return users;
+        }
+
 
         public List<User> GetUsersByFilter(string filter)
         {
-            throw new NotImplementedException();
+            List<User> users = new List<User>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = @"
+            SELECT u.UserId, u.Name, ci.PhoneNumber, ci.Email, l.Postcode, l.MunicipalityName, l.StreetName, l.HouseNumberLabel
+            FROM [User] u
+            LEFT JOIN ContactInfo ci ON u.ContactInfoId = ci.ContactInfoId
+            LEFT JOIN Location l ON u.LocationId = l.LocationId
+            WHERE u.Name LIKE '%' + @Filter + '%' AND u.DeletedAt IS NULL
+        ";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Filter", filter);
+
+                    connection.Open();
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            // Haal de gegevens uit de database en maak nieuwe User-objecten met ContactInfo en Location
+                            ContactInfo ci = new ContactInfo(reader.GetString(2), reader.GetString(3));
+                            Location l = new Location(reader.GetInt32(4), reader.GetString(5), reader.IsDBNull(6) ? null : reader.GetString(6), reader.IsDBNull(7) ? null : reader.GetString(7));
+
+                            User user = new User
+                            {
+                                CustomerId = reader.GetInt32(0),
+                                Name = reader.GetString(1),
+                                ContactInfo = ci,
+                                Location = l
+                            };
+
+                            users.Add(user);
+                        }
+                    }
+                }
+            }
+
+            return users;
         }
+
 
         public User UpdateUser(User user)
         {
-            throw new NotImplementedException();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = @"
+            UPDATE [User]
+            SET Name = @Name,
+                ContactInfoId = @ContactInfoId,
+                LocationId = @LocationId
+            WHERE UserId = @UserId
+        ";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Name", user.Name);
+                    command.Parameters.AddWithValue("@ContactInfoId", user.ContactInfo.ContactInfoID);
+                    command.Parameters.AddWithValue("@LocationId", user.Location.LocationID);
+                    command.Parameters.AddWithValue("@UserId", user.CustomerId);
+
+                    connection.Open();
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    // Controleer of de update succesvol is uitgevoerd
+                    if (rowsAffected > 0)
+                    {
+                        // Als de update succesvol was, retourneer de bijgewerkte gebruiker
+                        return GetUserById(user.CustomerId);
+                    }
+                    else
+                    {
+                        // Gebruiker niet bijgewerkt, returneer bijvoorbeeld null of geef een foutmelding terug
+                        return null;
+                    }
+                }
+            }
         }
+
     }
 }
 

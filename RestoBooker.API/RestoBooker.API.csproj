@@ -11,10 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Model\Output\" />
-  </ItemGroup>
-
-  <ItemGroup>
     
     <ProjectReference Include="..\RestoBooker.Data\RestoBooker.Data.csproj" />
   </ItemGroup>

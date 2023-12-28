@@ -4,6 +4,7 @@ using Restobooker.Domain.Services;
 using RestoBooker.API.Mappers;
 using RestoBooker.API.Model.Input;
 using System;
+using System.Collections.Generic;
 
 namespace RestoBooker.API.Controllers
 {
@@ -39,6 +40,7 @@ namespace RestoBooker.API.Controllers
                 return BadRequest(ex.Message); // Change to return BadRequest for validation errors
             }
         }
+
         [HttpPost]
         public ActionResult<User> PostUser([FromBody] UserRestInputDTO restDTO)
         {
@@ -47,11 +49,82 @@ namespace RestoBooker.API.Controllers
                 User user = userService.AddUser(MapToDomain.MapToUserDomain(restDTO));
                 return Ok();
             }
-            catch (Exception ex) { return BadRequest(ex.Message); }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
-        //public User mapUser(UserRestInputDTO restDTO)
-        //{
 
-        //}
+        [HttpPatch]
+        [Route("{id}")]
+        public ActionResult<User> UpdateUser(int id, [FromBody] UserRestInputDTO restDTO)
+        {
+            try
+            {
+                if (id != MapToDomain.MapToUserDomain(restDTO).CustomerId) return BadRequest();
+                userService.UpdateUser(MapToDomain.MapToUserDomain(restDTO));
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteUser(int id)
+        {
+            try
+            {
+                userService.DeleteUser(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet()]
+        public ActionResult<List<User>> GetAllUsers()
+        {
+            try
+            {
+                List<User> users = userService.GetAllUsers();
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("GetUsersByFilter")]
+        public ActionResult<List<User>> GetUsersByFilter(string filter)
+        {
+            try
+            {
+                List<User> users = userService.GetUsersByFilter(filter);
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet()]
+        public ActionResult<List<User>> GetDeletedUsers()
+        {
+            try
+            {
+                List<User> deletedUsers = userService.GetDeletedUsers();
+                return Ok(deletedUsers);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

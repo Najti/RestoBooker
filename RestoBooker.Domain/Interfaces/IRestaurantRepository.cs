@@ -14,6 +14,6 @@ namespace Restobooker.Domain.Interfaces
         public List<Restaurant> GetRestaurantsByFilter(string filter);
         public void DeleteRestaurant(int id);
         public Restaurant GetRestaurantById(int id);
-        public void AddRestaurant(Restaurant restaurant);
+        public Restaurant AddRestaurant(Restaurant restaurant);
     }
 }

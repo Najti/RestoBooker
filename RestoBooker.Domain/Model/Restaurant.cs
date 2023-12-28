@@ -12,6 +12,7 @@ namespace Restobooker.Domain.Model
         public Location Location { get; set; }
         public string Cuisine { get; set; }
         public ContactInfo ContactDetails { get; set; }
+        public int RestaurantId { get; set; }
 
         // Constructor
         public Restaurant(string name, Location location, string cuisine, ContactInfo contactDetails)

@@ -21,5 +21,7 @@ namespace Restobooker.Domain.Services
         public void DeleteUser(int id) { repo.DeleteUser(id); }
         public User GetUserById(int id) { return repo.GetUserById(id); }
         public User AddUser(User user) { return repo.AddUser(user); }
+        public List<User> GetAllUsers() { return repo.GetUsers(); }
+        public List<User> GetDeletedUsers() { return repo.GetDeletedUsers(); }
     }
 }

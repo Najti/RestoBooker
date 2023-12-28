@@ -10,8 +10,8 @@ namespace Restobooker.Domain.Model
     {
         private static int _nextReservationId = 1;
 
-        public int ReservationNumber { get; private set; }
-        public string RestaurantInfo { get; set; }
+        public int ReservationNumber { get; set; }
+        public Restaurant Restaurant { get; set; }
         public User ContactPerson { get; set; }
         public int NumberOfSeats { get; set; }
         public DateTime Date { get; set; }
@@ -19,9 +19,9 @@ namespace Restobooker.Domain.Model
         public int TableNumber { get; set; }
 
         // Constructor for creating a reservation
-        public Reservation(string restaurantInfo, User contactPerson, int numberOfSeats, DateTime date, TimeSpan time, int tableNumber)
+        public Reservation(Restaurant restaurant, User contactPerson, int numberOfSeats, DateTime date, TimeSpan time, int tableNumber)
         {
-            RestaurantInfo = restaurantInfo;
+            Restaurant = restaurant;
             ContactPerson = contactPerson;
             NumberOfSeats = numberOfSeats;
             Date = date;

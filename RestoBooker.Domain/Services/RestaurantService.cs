@@ -20,6 +20,6 @@ namespace Restobooker.Domain.Services
         public List<Restaurant> GetRestaurantsByFilter(string filter) { return repo.GetRestaurantsByFilter(filter); }
         public void DeleteRestaurant(int id) { repo.DeleteRestaurant(id); }
         public Restaurant GetRestaurantById(int id) { return repo.GetRestaurantById(id); }
-        public void AddRestaurant(Restaurant restaurant) { repo.AddRestaurant(restaurant); }
+        public Restaurant AddRestaurant(Restaurant restaurant) { return repo.AddRestaurant(restaurant); }
     }
 }
