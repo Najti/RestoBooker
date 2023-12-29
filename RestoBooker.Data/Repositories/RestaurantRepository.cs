@@ -88,8 +88,8 @@ namespace Restobooker.Domain.Repositories
                     {
                         if (reader.Read())
                         {
-                            ContactInfo ci = new ContactInfo(reader.GetString(2), reader.GetString(3));
-                            Location l = new Location(reader.GetInt32(4), reader.GetString(5), reader.IsDBNull(6) ? null : reader.GetString(6), reader.IsDBNull(7) ? null : reader.GetString(7));
+                            ContactInfo ci = new ContactInfo(reader.GetString(6), reader.GetString(7));
+                            Location l = new Location(reader.GetInt32(2), reader.GetString(3), reader.IsDBNull(4) ? null : reader.GetString(4), reader.IsDBNull(5) ? null : reader.GetString(5));
 
                             restaurant = new Restaurant(reader.GetString(0), l, reader.GetString(1), ci);
                         }
@@ -120,8 +120,8 @@ namespace Restobooker.Domain.Repositories
                     {
                         while (reader.Read())
                         {
-                            ContactInfo ci = new ContactInfo(reader.GetString(2), reader.GetString(3));
-                            Location l = new Location(reader.GetInt32(4), reader.GetString(5), reader.IsDBNull(6) ? null : reader.GetString(6), reader.IsDBNull(7) ? null : reader.GetString(7));
+                            ContactInfo ci = new ContactInfo(reader.GetString(7), reader.GetString(8));
+                            Location l = new Location(reader.GetInt32(3), reader.GetString(4), reader.IsDBNull(5) ? null : reader.GetString(5), reader.IsDBNull(6) ? null : reader.GetString(6));
 
                             Restaurant restaurant = new Restaurant(reader.GetString(1), l, reader.GetString(2), ci);
                             restaurants.Add(restaurant);
@@ -157,8 +157,8 @@ namespace Restobooker.Domain.Repositories
                     {
                         while (reader.Read())
                         {
-                            ContactInfo ci = new ContactInfo(reader.GetString(2), reader.GetString(3));
-                            Location l = new Location(reader.GetInt32(4), reader.GetString(5), reader.IsDBNull(6) ? null : reader.GetString(6), reader.IsDBNull(7) ? null : reader.GetString(7));
+                            ContactInfo ci = new ContactInfo(reader.GetString(7), reader.GetString(8));
+                            Location l = new Location(reader.GetInt32(3), reader.GetString(4), reader.IsDBNull(5) ? null : reader.GetString(5), reader.IsDBNull(6) ? null : reader.GetString(6));
 
                             Restaurant restaurant = new Restaurant(reader.GetString(1), l, reader.GetString(2), ci);
                             restaurants.Add(restaurant);

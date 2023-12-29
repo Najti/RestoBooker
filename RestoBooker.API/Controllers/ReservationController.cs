@@ -6,7 +6,7 @@ using Restobooker.Domain.Services;
 
 namespace RestoBooker.API.Controllers
 {
-    [Route("api/[controller]/Reservation")]
+    [Route("api/[controller]")]
     [ApiController]
     public class ReservationController : ControllerBase
     {
@@ -38,6 +38,28 @@ namespace RestoBooker.API.Controllers
                 return BadRequest(ex.Message); // Change to return BadRequest for validation errors
             }
         }
+        [HttpGet("/User/{UserID}")]
+        public ActionResult<Reservation> GetReservationByUserID(int UserID)
+        {
+            try
+            {
+                Reservation u = reservationService.GetReservationById(UserID);
+
+                if (u != null)
+                {
+                    return Ok(u);
+                }
+                else
+                {
+                    return NotFound("Reservation not found"); // Adjust message to indicate reservation not found
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message); // Change to return BadRequest for validation errors
+            }
+        }
+
 
         [HttpPost]
         public ActionResult<Reservation> PostReservation([FromBody] ReservationRestInputDTO restDTO)
@@ -97,8 +119,8 @@ namespace RestoBooker.API.Controllers
             }
         }
 
-        [HttpGet()]
-        public ActionResult<List<Reservation>> GetReservationsByFilter(string filter)
+        [HttpGet("filter")]
+        public ActionResult<List<Reservation>> GetReservationsByFilter([FromQuery] string filter)
         {
             try
             {

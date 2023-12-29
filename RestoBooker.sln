@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestoBooker.Data", "RestoBo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Restobooker.Domain", "RestoBooker.Domain\Restobooker.Domain.csproj", "{9EBF1E31-3248-4E54-8A04-D2322F32C914}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestoBooker.FrontEnd", "RestoBooker.FrontEnd\RestoBooker.FrontEnd.csproj", "{84A8D1A7-94B4-4A66-B2E6-12E22FB13925}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{9EBF1E31-3248-4E54-8A04-D2322F32C914}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9EBF1E31-3248-4E54-8A04-D2322F32C914}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9EBF1E31-3248-4E54-8A04-D2322F32C914}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84A8D1A7-94B4-4A66-B2E6-12E22FB13925}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84A8D1A7-94B4-4A66-B2E6-12E22FB13925}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84A8D1A7-94B4-4A66-B2E6-12E22FB13925}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84A8D1A7-94B4-4A66-B2E6-12E22FB13925}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

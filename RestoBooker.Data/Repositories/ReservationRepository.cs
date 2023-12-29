@@ -16,6 +16,8 @@ namespace RestoBooker.Data.Repositories
         public ReservationRepository(string connectionString)
         {
             this.connectionString = connectionString;
+            _userRepository = new UserRepository(connectionString);
+            _restaurantRepository = new RestaurantRepository(connectionString);
         }
 
         public Reservation AddReservation(Reservation reservation)
@@ -137,6 +139,8 @@ namespace RestoBooker.Data.Repositories
                         while (reader.Read())
                         {
                             ContactInfo contactInfo = new ContactInfo(reader.GetString(8), reader.GetString(9)); // Update index for ContactInfo
+                            Console.WriteLine(reader.GetInt32(6));
+                            Console.WriteLine(reader.GetInt32(5));
                             User contactPerson = _userRepository.GetUserById(reader.GetInt32(6)); // Update index for User
                             Restaurant restaurant = _restaurantRepository.GetRestaurantById(reader.GetInt32(5)); // Update index for Restaurant
                             Reservation reservation = new Reservation(

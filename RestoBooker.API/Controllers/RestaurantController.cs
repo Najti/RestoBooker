@@ -6,7 +6,7 @@ using Restobooker.Domain.Services;
 
 namespace RestoBooker.API.Controllers
 {
-    [Route("api/[controller]/Restaurant")]
+    [Route("api/[controller]")]
     [ApiController]
     public class RestaurantController : ControllerBase
     {
@@ -97,8 +97,8 @@ namespace RestoBooker.API.Controllers
             }
         }
 
-        [HttpGet()]
-        public ActionResult<List<Restaurant>> GetRestaurantsByFilter(string filter)
+        [HttpGet("filter")]
+        public ActionResult<List<Restaurant>> GetRestaurantsByFilter([FromQuery] string filter)
         {
             try
             {

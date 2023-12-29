@@ -16,5 +16,6 @@ namespace Restobooker.Domain.Interfaces
         public User GetUserById(int id);
         public User AddUser(User user);
         public List<User> GetDeletedUsers();
+        public User LogUserIn(string userName);
     }
 }

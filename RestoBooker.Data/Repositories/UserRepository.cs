@@ -303,6 +303,10 @@ namespace RestoBooker.Data.Repositories
             }
         }
 
+        public User LogUserIn(string userName)
+        {
+            return GetUserById(1);
+        }
     }
 }
 

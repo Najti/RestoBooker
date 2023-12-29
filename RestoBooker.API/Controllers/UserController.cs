@@ -3,12 +3,13 @@ using Restobooker.Domain.Model;
 using Restobooker.Domain.Services;
 using RestoBooker.API.Mappers;
 using RestoBooker.API.Model.Input;
+using RestoBooker.API.Model.Output;
 using System;
 using System.Collections.Generic;
 
 namespace RestoBooker.API.Controllers
 {
-    [Route("api/[controller]/User")]
+    [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -57,13 +58,27 @@ namespace RestoBooker.API.Controllers
 
         [HttpPatch]
         [Route("{id}")]
-        public ActionResult<User> UpdateUser(int id, [FromBody] UserRestInputDTO restDTO)
+        public ActionResult<UserRestOutputDTO> UpdateUser(int id, [FromBody] UserRestInputDTO restDTO)
         {
             try
             {
                 if (id != MapToDomain.MapToUserDomain(restDTO).CustomerId) return BadRequest();
-                userService.UpdateUser(MapToDomain.MapToUserDomain(restDTO));
-                return Ok();
+                var user = userService.UpdateUser(MapToDomain.MapToUserDomain(restDTO));
+                return Ok(MapFromDomain.MapFromUserDomain(user));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("Login")]
+        public ActionResult<UserRestOutputDTO> LogUserIn([FromBody] string username)
+        {
+            try
+            {
+                return Ok(MapFromDomain.MapFromUserDomain(userService.LogUserIn(username)));
             }
             catch (Exception ex)
             {
@@ -99,8 +114,8 @@ namespace RestoBooker.API.Controllers
             }
         }
 
-        [HttpGet("GetUsersByFilter")]
-        public ActionResult<List<User>> GetUsersByFilter(string filter)
+        [HttpGet("filter")]
+        public ActionResult<List<User>> GetUsersByFilter([FromQuery] string filter)
         {
             try
             {
@@ -113,7 +128,7 @@ namespace RestoBooker.API.Controllers
             }
         }
 
-        [HttpGet()]
+        [HttpGet("deleted")]
         public ActionResult<List<User>> GetDeletedUsers()
         {
             try

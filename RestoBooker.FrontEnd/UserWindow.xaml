@@ -1,0 +1,22 @@
+﻿<Window x:Class="RestoBooker.FrontEnd.UserWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="UserWindow" Height="450" Width="800">
+    <Grid>
+        <TextBlock Text="{Binding Path=UserName}" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0" />
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,50,0,0">
+            <Button Content="Make Reservation" Width="150" Margin="5"/>
+            <Button Content="Change User Details" Width="150" Margin="5"/>
+            <Button Content="Delete Account" Width="150" Margin="5"/>
+        </StackPanel>
+
+        <!-- Grid voor reservaties -->
+        <DataGrid x:Name="reservationsGrid" AutoGenerateColumns="True" HorizontalAlignment="Center" Margin="0,80,0,50"/>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,20">
+            <Button Content="Cancel Reservation" Width="150" Margin="5"/>
+            <Button Content="Change Reservation" Width="150" Margin="5"/>
+        </StackPanel>
+    </Grid>
+</Window>
